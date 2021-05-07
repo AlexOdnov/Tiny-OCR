@@ -1,13 +1,21 @@
 <template>
-  <div class="app" :class="{ light: !isDark, dark: isDark }"></div>
+  <div class="app" :class="{ light: !isDark, dark: isDark }">
+    <ocr-header />
+    <div></div>
+    <ocr-footer />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import useThemeToggler from './composable/useThemeToggler';
+import OcrHeader from './components/OcrHeader.vue';
+import OcrFooter from './components/OcrFooter.vue';
 
 export default defineComponent({
   name: 'App',
+
+  components: { OcrHeader, OcrFooter },
 
   setup() {
     const { isDark, toggleTheme } = useThemeToggler();
@@ -43,6 +51,8 @@ export default defineComponent({
   --color: #efeff1;
 }
 .app {
+  display: grid;
+  grid-template-rows: min-content 1fr min-content;
   min-height: 100vh;
   color: var(--color);
   background-color: var(--bgDarkColor);
