@@ -1,18 +1,13 @@
 <template>
-  <div class="app" :class="{ light: !isDark, dark: isDark }">
-    <theme-toggler />
-  </div>
+  <div class="app" :class="{ light: !isDark, dark: isDark }"></div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ThemeToggler from './components/ThemeToggler.vue';
 import useThemeToggler from './composable/useThemeToggler';
 
 export default defineComponent({
   name: 'App',
-
-  components: { ThemeToggler },
 
   setup() {
     const { isDark, toggleTheme } = useThemeToggler();
@@ -32,7 +27,7 @@ export default defineComponent({
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
