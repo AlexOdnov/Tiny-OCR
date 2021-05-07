@@ -15,7 +15,10 @@ import OcrFooter from './components/OcrFooter.vue';
 export default defineComponent({
   name: 'App',
 
-  components: { OcrHeader, OcrFooter },
+  components: {
+    OcrHeader,
+    OcrFooter,
+  },
 
   setup() {
     const { isDark, toggleTheme } = useThemeToggler();
@@ -41,14 +44,14 @@ export default defineComponent({
   text-align: center;
 }
 .light {
-  --bgDarkColor: #f7f7f8;
+  --bgDarkColor: #f5f5f5;
   --bgLightColor: #fff;
-  --color: #0e0e10;
+  --color: #2b2a33;
 }
 .dark {
-  --bgDarkColor: #0e0e10;
-  --bgLightColor: #18181b;
-  --color: #efeff1;
+  --bgDarkColor: #1c1b22;
+  --bgLightColor: #2b2a33;
+  --color: #f5f5f5;
 }
 .app {
   display: grid;
