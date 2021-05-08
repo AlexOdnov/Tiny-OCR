@@ -3,31 +3,38 @@
     <h1 class="header__title">Tiny-OCR</h1>
     <p class="header__description">
       Приложение для оптического распознавания текста (OCR) основанное на
-      библиотеке Tesseract.js
+      библиотеке
+      <a
+        class="link header__link"
+        href="https://github.com/naptha/tesseract.js"
+        rel="noopener noreferrer"
+        target="_blank"
+        aria-label="Ссылка на Github"
+      >
+        Tesseract.js
+      </a>
     </p>
   </header>
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   name: 'OcrHeader',
-};
+});
 </script>
 
 <style lang="scss" scoped>
 .header {
-  padding: 24px;
+  padding: var(--outer-padding);
 }
 .header__title {
-  font-size: 36px;
+  font-size: 3rem;
   font-weight: 500;
-  margin-bottom: 12px;
+  margin-bottom: 1rem;
 }
 .header__description {
-  font-size: 18px;
-
-  @media (min-width: 640px) {
-    font-size: 22px;
-  }
+  font-size: 1.5rem;
 }
 </style>

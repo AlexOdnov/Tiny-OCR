@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
     <a
-      class="footer__link"
+      class="link footer__link"
       href="https://github.com/AlexOdnov/Tiny-OCR"
       rel="noopener noreferrer"
       target="_blank"
@@ -27,13 +27,14 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import ThemeToggler from './ThemeToggler.vue';
 
-export default {
+export default defineComponent({
   name: 'OcrFooter',
 
   components: { ThemeToggler },
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -41,39 +42,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px;
-}
-.footer__link {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 2px 0;
-  text-decoration: none;
-  outline: none;
-  transition: opacity 0.2s;
-
-  &::before {
-    content: '';
-
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    display: block;
-    width: 100%;
-    height: 1px;
-    background-color: var(--color);
-
-    transform: scale(0);
-    transition: transform 0.2s;
-  }
-
-  &:hover,
-  &:focus-visible {
-    opacity: 0.75;
-    &::before {
-      transform: scale(1);
-    }
-  }
+  padding: var(--outer-padding);
 }
 </style>

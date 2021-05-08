@@ -37,6 +37,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+:root {
+  font-size: 14px;
+  --outer-padding: 2rem;
+
+  @media (min-width: 480px) {
+    font-size: 16px;
+  }
+}
 #app {
   font-family: 'Ubuntu', sans-serif;
   -webkit-font-smoothing: antialiased;
