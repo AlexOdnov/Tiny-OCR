@@ -1,7 +1,7 @@
 <template>
   <div class="app" :class="{ light: !isDark, dark: isDark }">
     <ocr-header />
-    <div></div>
+    <ocr-app />
     <ocr-footer />
   </div>
 </template>
@@ -11,6 +11,7 @@ import { defineComponent } from 'vue';
 import useThemeToggler from './composable/useThemeToggler';
 import OcrHeader from './components/OcrHeader.vue';
 import OcrFooter from './components/OcrFooter.vue';
+import OcrApp from './components/OcrApp.vue';
 
 export default defineComponent({
   name: 'App',
@@ -18,6 +19,7 @@ export default defineComponent({
   components: {
     OcrHeader,
     OcrFooter,
+    OcrApp,
   },
 
   setup() {
