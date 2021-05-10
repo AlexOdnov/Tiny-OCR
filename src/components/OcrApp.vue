@@ -1,15 +1,29 @@
 <template>
   <div class="ocr-app">
-    <image-input class="ocr-app__input" />
+    <image-input class="ocr-app__input" @uploadImage="onImageUpload" />
     <button class="button ocr-app__language" type="button">Выбрать язык</button>
-    <text-output class="ocr-app__output" :recognizedText="''" />
+    <text-output
+      class="ocr-app__output"
+      :recognizedText="recognizedText"
+      :status="status"
+      :progress="progress"
+    />
     <div class="ocr-app__button-group">
-      <button class="button" type="button">Распознать</button>
+      <button
+        class="button"
+        type="button"
+        :disabled="!image"
+        @click="startRecognize"
+      >
+        Распознать
+      </button>
       <button
         class="button ocr-app__button-copy"
         type="button"
         aria-label="скопировать текст"
-        disabled
+        title="скопировать текст"
+        :disabled="!recognizedText"
+        @click="copyText"
       >
         <svg
           width="32px"
@@ -30,9 +44,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive, ref, toRefs } from 'vue';
+import { createWorker } from 'tesseract.js';
 import ImageInput from './ImageInput.vue';
 import TextOutput from './TextOutput.vue';
+
+interface Recognizing {
+  status: string;
+  progress: number;
+}
 
 export default defineComponent({
   name: 'OcrApp',
@@ -42,7 +62,55 @@ export default defineComponent({
     TextOutput,
   },
 
-  // setup() {},
+  setup() {
+    const image = ref<null | string>(null);
+    const recognizedText = ref('');
+    const recognizing = reactive<Recognizing>({
+      status: '',
+      progress: 0,
+    });
+
+    const onImageUpload = (e: string) => {
+      image.value = e;
+    };
+
+    const startRecognize = async () => {
+      recognizedText.value = '';
+      recognizing.status = '';
+      recognizing.progress = 0;
+
+      const worker = createWorker({
+        logger: (data: Recognizing) => {
+          recognizing.status = data.status;
+          if (data.status === 'recognizing text') {
+            recognizing.progress = +data.progress.toFixed(3);
+          }
+        },
+      });
+      await worker.load();
+      await worker.loadLanguage('rus');
+      await worker.initialize('rus');
+      const {
+        data: { text },
+      } = await worker.recognize(image.value);
+      await worker.terminate();
+
+      recognizedText.value = text;
+    };
+
+    const copyText = () => {
+      navigator.clipboard.writeText(recognizedText.value);
+    };
+
+    return {
+      image,
+      ...toRefs(recognizing),
+      recognizedText,
+      onImageUpload,
+      startRecognize,
+      copyText,
+    };
+  },
 });
 </script>
 
