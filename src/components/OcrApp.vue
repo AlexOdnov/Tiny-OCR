@@ -74,22 +74,21 @@ export default defineComponent({
       image.value = e;
     };
 
-    const worker = createWorker({
-      workerPath: './tesseract/worker.min.js',
-      corePath: './tesseract/tesseract-core.wasm.js',
-      logger: (data: Recognizing) => {
-        recognizing.status = data.status;
-        if (data.status === 'recognizing text') {
-          recognizing.progress = +data.progress.toFixed(3);
-        }
-      },
-    });
-
     const startRecognize = async () => {
       recognizedText.value = '';
       recognizing.status = '';
       recognizing.progress = 0;
 
+      const worker = createWorker({
+        workerPath: './tesseract/worker.min.js',
+        corePath: './tesseract/tesseract-core.wasm.js',
+        logger: (data: Recognizing) => {
+          recognizing.status = data.status;
+          if (data.status === 'recognizing text') {
+            recognizing.progress = +data.progress.toFixed(3);
+          }
+        },
+      });
       await worker.load();
       await worker.loadLanguage('rus');
       await worker.initialize('rus');
