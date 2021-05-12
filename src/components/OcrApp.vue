@@ -1,7 +1,12 @@
 <template>
   <div class="ocr-app">
     <image-input class="ocr-app__input" @uploadImage="onImageUpload" />
-    <button class="button ocr-app__language" type="button">Выбрать язык</button>
+    <ocr-select
+      class="ocr-app__language"
+      :options="languages"
+      :placeholder="languages[0].name"
+      @selectOption="onSelectLanguage"
+    />
     <text-output
       class="ocr-app__output"
       :recognizedText="recognizedText"
@@ -48,6 +53,7 @@ import { defineComponent, reactive, ref, toRefs } from 'vue';
 import { createWorker } from 'tesseract.js';
 import ImageInput from './ImageInput.vue';
 import TextOutput from './TextOutput.vue';
+import OcrSelect from './OcrSelect.vue';
 
 interface Recognizing {
   status: string;
@@ -60,10 +66,16 @@ export default defineComponent({
   components: {
     ImageInput,
     TextOutput,
+    OcrSelect,
   },
 
   setup() {
     const image = ref<null | string>(null);
+    const languages = ref([
+      { code: 'rus', name: 'Русский' },
+      { code: 'eng', name: 'Английский' },
+    ]);
+    let language = languages.value[0].code;
     const recognizedText = ref('');
     const recognizing = reactive<Recognizing>({
       status: '',
@@ -72,6 +84,10 @@ export default defineComponent({
 
     const onImageUpload = (e: string) => {
       image.value = e;
+    };
+
+    const onSelectLanguage = (e: string) => {
+      language = e;
     };
 
     const startRecognize = async () => {
@@ -90,8 +106,8 @@ export default defineComponent({
         },
       });
       await worker.load();
-      await worker.loadLanguage('rus');
-      await worker.initialize('rus');
+      await worker.loadLanguage(language);
+      await worker.initialize(language);
       const {
         data: { text },
       } = await worker.recognize(image.value);
@@ -108,7 +124,9 @@ export default defineComponent({
       image,
       ...toRefs(recognizing),
       recognizedText,
+      languages,
       onImageUpload,
+      onSelectLanguage,
       startRecognize,
       copyText,
     };
@@ -147,6 +165,7 @@ export default defineComponent({
 }
 .ocr-app__language {
   place-self: center;
+  width: 80%;
   @media (min-width: 640px) {
     grid-row: -1 / -2;
   }
