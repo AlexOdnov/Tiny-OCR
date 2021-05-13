@@ -11,23 +11,20 @@
         ref="line"
       />
     </svg>
-    <span class="loading-indicator__status">{{ status }}...</span>
+    <span class="loading-indicator__status">{{ recognizing.status }}...</span>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue';
+import { defineComponent, ref, computed, onMounted, PropType } from 'vue';
+import Recognizing from '../types/Recognizing';
 
 export default defineComponent({
   name: 'LoadingIndicator',
 
   props: {
-    status: {
-      type: String,
-      required: true,
-    },
-    progress: {
-      type: Number,
+    recognizing: {
+      type: Object as PropType<Recognizing>,
       required: true,
     },
   },
@@ -42,7 +39,10 @@ export default defineComponent({
     });
 
     const dasharray = computed(
-      () => `${props.progress * circumference.value} ${circumference.value}`
+      () =>
+        `${props.recognizing.progress * circumference.value} ${
+          circumference.value
+        }`
     );
 
     return {

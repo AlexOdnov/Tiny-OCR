@@ -5,16 +5,16 @@
         {{ recognizedText }}
       </p>
       <loading-indicator
-        v-else-if="!recognizedText && status"
-        :status="status"
-        :progress="progress"
+        v-else-if="!recognizedText && recognizing.status"
+        :recognizing="recognizing"
       />
     </transition>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
+import Recognizing from '../types/Recognizing';
 import LoadingIndicator from './LoadingIndicator.vue';
 
 export default defineComponent({
@@ -27,12 +27,8 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    status: {
-      type: String,
-      required: true,
-    },
-    progress: {
-      type: Number,
+    recognizing: {
+      type: Object as PropType<Recognizing>,
       required: true,
     },
   },

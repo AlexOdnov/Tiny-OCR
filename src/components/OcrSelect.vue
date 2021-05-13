@@ -36,14 +36,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, PropType } from 'vue';
+import LanguagesList from '../types/LanguagesList';
 
 export default defineComponent({
   name: 'OcrSelect',
 
   props: {
     options: {
-      type: Array,
+      type: Array as PropType<LanguagesList>,
       required: true,
     },
     placeholder: {

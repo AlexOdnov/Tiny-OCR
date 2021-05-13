@@ -10,8 +10,7 @@
     <text-output
       class="ocr-app__output"
       :recognizedText="recognizedText"
-      :status="status"
-      :progress="progress"
+      :recognizing="recognizing"
     />
     <div class="ocr-app__button-group">
       <button
@@ -49,16 +48,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
+import Recognizing from '../types/Recognizing';
+import LanguagesList from '../types/LanguagesList';
 import { createWorker } from 'tesseract.js';
 import ImageInput from './ImageInput.vue';
 import TextOutput from './TextOutput.vue';
 import OcrSelect from './OcrSelect.vue';
-
-interface Recognizing {
-  status: string;
-  progress: number;
-}
 
 export default defineComponent({
   name: 'OcrApp',
@@ -71,7 +67,7 @@ export default defineComponent({
 
   setup() {
     const image = ref<null | string>(null);
-    const languages = ref([
+    const languages = ref<LanguagesList>([
       { code: 'rus', name: 'Русский' },
       { code: 'eng', name: 'Английский' },
     ]);
@@ -122,7 +118,7 @@ export default defineComponent({
 
     return {
       image,
-      ...toRefs(recognizing),
+      recognizing,
       recognizedText,
       languages,
       onImageUpload,

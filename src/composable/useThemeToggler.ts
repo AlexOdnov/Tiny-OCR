@@ -1,11 +1,5 @@
-import { ref, Ref } from 'vue';
-
-type ToggleTheme = () => void;
-
-interface ThemeToggler {
-  isDark: Ref<boolean>;
-  toggleTheme: ToggleTheme;
-}
+import { ref } from 'vue';
+import ThemeToggler from './../types/ThemeToggler';
 
 const isDark = ref(false);
 
