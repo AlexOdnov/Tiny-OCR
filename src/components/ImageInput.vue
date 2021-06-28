@@ -39,7 +39,11 @@ export default defineComponent({
     const imageSrc = ref<null | string>(null);
     const isHovered = ref(false);
 
-    const readImage = (image: File) => {
+    const readImage = (file: File) => {
+      if (!file.type.includes('image/')) {
+        console.error('файл должен быть изображением');
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (e) => {
         if (typeof e.target?.result === 'string') {
@@ -50,17 +54,12 @@ export default defineComponent({
         }
         console.error('не удалось загрузить изображение');
       };
-      reader.readAsDataURL(image);
+      reader.readAsDataURL(file);
     };
 
     const loadImage = () => {
       if (imageInput.value?.files?.length) {
         const file = imageInput.value.files[0];
-
-        if (!file.type.includes('image/')) {
-          console.error('файл должен быть изображением');
-          return;
-        }
         readImage(file);
       }
     };
@@ -77,11 +76,6 @@ export default defineComponent({
       isHovered.value = false;
       if (e.dataTransfer?.files?.length) {
         const file = e.dataTransfer.files[0];
-
-        if (!file.type.includes('image/')) {
-          console.error('файл должен быть изображением');
-          return;
-        }
         readImage(file);
       }
     };
