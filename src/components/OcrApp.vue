@@ -94,6 +94,7 @@ export default defineComponent({
       const worker = createWorker({
         workerPath: './tesseract/worker.min.js',
         corePath: './tesseract/tesseract-core.wasm.js',
+        langPath: './tesseract/lang',
         logger: (data: Recognizing) => {
           recognizing.status = data.status;
           if (data.status === 'recognizing text') {
