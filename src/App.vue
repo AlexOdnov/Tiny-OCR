@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import useThemeToggler from './composable/useThemeToggler';
 import OcrHeader from './components/OcrHeader.vue';
 import OcrFooter from './components/OcrFooter.vue';
@@ -30,6 +30,25 @@ export default defineComponent({
     }
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     mediaQuery.addEventListener('change', toggleTheme);
+
+    window.addEventListener('offline', () => {
+      location.reload();
+    });
+
+    const preloadResource = (href: string, as: string) => {
+      const resource = document.createElement('link');
+      resource.href = href;
+      resource.as = as;
+      resource.rel = 'preload';
+      document.head.appendChild(resource);
+    };
+
+    onMounted(() => {
+      preloadResource('./tesseract/worker.min.js', 'script');
+      preloadResource('./tesseract/tesseract-core.wasm.js', 'script');
+      preloadResource('./tesseract/lang/rus.traineddata.gz', 'fetch');
+      preloadResource('./tesseract/lang/eng.traineddata.gz', 'fetch');
+    });
 
     return {
       isDark,

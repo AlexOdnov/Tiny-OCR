@@ -97,7 +97,7 @@ export default defineComponent({
         langPath: './tesseract/lang',
         logger: (data: Recognizing) => {
           recognizing.status = data.status;
-          if (data.status === 'recognizing text') {
+          if (data.status === 'распознавание текста') {
             recognizing.progress = +data.progress.toFixed(3);
           }
         },
