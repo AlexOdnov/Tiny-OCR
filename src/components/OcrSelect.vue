@@ -36,7 +36,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, PropType } from 'vue';
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  PropType,
+  onBeforeUnmount,
+} from 'vue';
 import LanguagesList from '../types/LanguagesList';
 
 export default defineComponent({
@@ -84,12 +90,14 @@ export default defineComponent({
       isOpenSelect.value ? closeSelect() : openSelect();
     };
 
-    document.documentElement.addEventListener('click', (e: Event) => {
+    const onClickOutside = (e: Event) => {
       const target = e.target as HTMLElement;
       if (!select.value?.contains(target)) {
         closeSelect();
       }
-    });
+    };
+
+    document.documentElement.addEventListener('click', onClickOutside);
 
     const onSelectOption = (langName: string, langCode: string) => {
       activeOptions.value = langName;
@@ -122,6 +130,10 @@ export default defineComponent({
 
     onMounted(() => {
       optionsList.value = [...document.getElementsByTagName('li')];
+    });
+
+    onBeforeUnmount(() => {
+      document.documentElement.removeEventListener('click', onClickOutside);
     });
 
     return {
