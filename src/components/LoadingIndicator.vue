@@ -1,6 +1,6 @@
 <template>
   <div class="loading-indicator">
-    <svg viewBox="0 0 42 42">
+    <svg viewBox="0 0 42 42" aria-hidden="true" role="img">
       <circle class="loading-indicator__circle" r="45%" cx="50%" cy="50%" />
       <circle
         class="loading-indicator__line"
